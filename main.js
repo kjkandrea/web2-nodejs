@@ -28,8 +28,6 @@ var app = http.createServer(function(request,response){
         if (queryData.id === undefined) {
 
             fs.readdir('./data', function(err, filelist){
-                console.log(filelist);
-
                 var title = 'Welcome';
                 var description = 'Hello, Node.js';
                 var list = '<ul>';
@@ -46,10 +44,6 @@ var app = http.createServer(function(request,response){
 
         } else {
             fs.readdir('./data', function(err, filelist){
-                console.log(filelist);
-
-                var title = 'Welcome';
-                var description = 'Hello, Node.js';
                 var list = '<ul>';
                 var i = 0;
                 while(i < filelist.length){
@@ -57,18 +51,8 @@ var app = http.createServer(function(request,response){
                     i = i + 1;
                 }
                 list = list + '</ul>';
-                fs.readdir('./data', function(err, filelist){
-                    console.log(filelist);
-
-                    var title = 'Welcome';
-                    var description = 'Hello, Node.js';
-                    var list = '<ul>';
-                    var i = 0;
-                    while(i < filelist.length){
-                        list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`
-                        i = i + 1;
-                    }
-                    list = list + '</ul>';
+                fs.readFile(`data/${queryData.id}`, 'utf8', function(err, description){
+                    var title = queryData.id;
                     var template = templateHTML(title, list, `<h2>${title}</h2>${description}`);
                     response.writeHead(200);
                     response.end(template);
